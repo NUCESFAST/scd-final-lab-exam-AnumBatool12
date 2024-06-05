@@ -74,11 +74,11 @@ pipeline{
                 script {
                     docker.withRegistry('', DOCKER_CREDENTIALS_ID) {
                         docker.image("${DOCKER_HUB_REPO}:latest").push()
-                        docker.image("${DOCKER_HUB_REPO}:latest").push()
-                        docker.image("${DOCKER_HUB_REPO}:latest").push()
+                        docker.image("${DOCKER_HUB_REPO}:latest").push()                        docker.image("${DOCKER_HUB_REPO}:latest").push()
                         docker.image("${DOCKER_HUB_REPO}:latest").push()
                     }
                 }
             }
+        }
     }
 }
