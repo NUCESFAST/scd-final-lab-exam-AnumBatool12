@@ -4,18 +4,20 @@ services:
   frontend:
     build:
       context: ./client
-    dockerfile: Dockerfile
+      dockerfile: Dockerfile
+    image: anumbatool1203/i211186_frontend
     ports:
       - "1186:1186"
     depends_on:
-      - Auth
-      - Classrooms
+      - auth
+      - classrooms
       - event-bus
   
-  Auth:
+  auth:
     build:
       context: ./Auth
-    dockerfile: Dockerfile
+      dockerfile: Dockerfile
+    image: anumbatool1203/i211186_auth
     ports:
       - "13186:13186"
     environment:
@@ -25,10 +27,11 @@ services:
     depends_on:
       - mongo
 
-  Classrooms:
+  classrooms:
     build:
       context: ./classrooms
-    dockerfile: Dockerfile
+      dockerfile: Dockerfile
+    image: anumbatool1203/i211186_classroom
     ports:
       - "23186:23186"
     environment:
@@ -41,7 +44,8 @@ services:
   event-bus:
     build:
       context: ./event-bus
-    dockerfile: Dockerfile
+      dockerfile: Dockerfile
+    image: anumbatool1203/i211186_event
     ports:
       - "33186:33186"
     environment:
@@ -58,5 +62,5 @@ services:
     ports:
       - "27017:27017"
 
-  volumes:
+volumes:
   mongo-data:
