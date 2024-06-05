@@ -21,8 +21,9 @@ pipeline {
             steps {
                 dir('Auth') {
                     script {
-                        def authImage = docker.build("${DOCKER_HUB_REPO_AUTH}:latest", '.')
-                        authImage.push()
+                        docker.build("${DOCKER_HUB_REPO_AUTH}:latest", '.').withRegistry('', "${DOCKER_CREDENTIALS_ID}") {
+                            docker.image("${DOCKER_HUB_REPO_AUTH}:latest").push()
+                        }
                     }
                 }
             }
@@ -31,8 +32,9 @@ pipeline {
             steps {
                 dir('Classrooms') {
                     script {
-                        def classroomImage = docker.build("${DOCKER_HUB_REPO_CLASSROOM}:latest", '.')
-                        classroomImage.push()
+                        docker.build("${DOCKER_HUB_REPO_CLASSROOM}:latest", '.').withRegistry('', "${DOCKER_CREDENTIALS_ID}") {
+                            docker.image("${DOCKER_HUB_REPO_CLASSROOM}:latest").push()
+                        }
                     }
                 }
             }
@@ -41,8 +43,9 @@ pipeline {
             steps {
                 dir('event-bus') {
                     script {
-                        def eventImage = docker.build("${DOCKER_HUB_REPO_EVENT}:latest", '.')
-                        eventImage.push()
+                        docker.build("${DOCKER_HUB_REPO_EVENT}:latest", '.').withRegistry('', "${DOCKER_CREDENTIALS_ID}") {
+                            docker.image("${DOCKER_HUB_REPO_EVENT}:latest").push()
+                        }
                     }
                 }
             }
@@ -51,8 +54,9 @@ pipeline {
             steps {
                 dir('client') {
                     script {
-                        def frontendImage = docker.build("${DOCKER_HUB_REPO_FRONT}:latest", '.')
-                        frontendImage.push()
+                        docker.build("${DOCKER_HUB_REPO_FRONT}:latest", '.').withRegistry('', "${DOCKER_CREDENTIALS_ID}") {
+                            docker.image("${DOCKER_HUB_REPO_FRONT}:latest").push()
+                        }
                     }
                 }
             }
@@ -61,8 +65,9 @@ pipeline {
             steps {
                 dir('client') {
                     script {
-                        def postImage = docker.build("${DOCKER_HUB_REPO_POST}:latest", '.')
-                        postImage.push()
+                        docker.build("${DOCKER_HUB_REPO_POST}:latest", '.').withRegistry('', "${DOCKER_CREDENTIALS_ID}") {
+                            docker.image("${DOCKER_HUB_REPO_POST}:latest").push()
+                        }
                     }
                 }
             }
@@ -70,8 +75,9 @@ pipeline {
         stage('Build DB') {
             steps {
                 script {
-                    def dbImage = docker.build("${DOCKER_HUB_REPO_DB}:latest", '.')
-                    dbImage.push()
+                    docker.build("${DOCKER_HUB_REPO_DB}:latest", '.').withRegistry('', "${DOCKER_CREDENTIALS_ID}") {
+                        docker.image("${DOCKER_HUB_REPO_DB}:latest").push()
+                    }
                 }
             }
         }
