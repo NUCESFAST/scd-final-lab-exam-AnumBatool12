@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./client
+    dockerfile: Dockerfile
+    ports:
+      - "1186:1186"
+    depends_on:
+      - Auth
+      - Classrooms
+      - event-bus
+  
+  Auth:
+    build:
+      context: ./Auth
+    dockerfile: Dockerfile
+    ports:
+      - "13186:13186"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/authdb
+      - CLASSROOMS_SERVICE_URL=http://classrooms:5000
+      - EVENT_BUS_SERVICE_URL=http://event-bus:5000
+    depends_on:
+      - mongo
+
+  Classrooms:
+    build:
+      context: ./classrooms
+    dockerfile: Dockerfile
+    ports:
+      - "23186:23186"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/classroomsdb
+      - AUTH_SERVICE_URL=http://auth:5000
+      - EVENT_BUS_SERVICE_URL=http://event-bus:5000
+    depends_on:
+      - mongo
+  
+  event-bus:
+    build:
+      context: ./event-bus
+    dockerfile: Dockerfile
+    ports:
+      - "33186:33186"
+    environment:
+      - AUTH_SERVICE_URL=http://auth:5000
+      - CLASSROOMS_SERVICE_URL=http://classrooms:5000
+      - MONGO_URI=mongodb://mongo:27017/eventbusdb
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+
+  volumes:
+  mongo-data:
