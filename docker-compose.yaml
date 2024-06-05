@@ -5,19 +5,20 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    image: anumbatool1203/i211186_frontend
+    image: anumbatool1203/i211186_frontend:latest
     ports:
       - "1186:1186"
     depends_on:
       - auth
       - classrooms
       - event-bus
+      - post
   
   auth:
     build:
       context: ./Auth
       dockerfile: Dockerfile
-    image: anumbatool1203/i211186_auth
+    image: anumbatool1203/i211186_auth:latest
     ports:
       - "13186:13186"
     environment:
@@ -31,7 +32,7 @@ services:
     build:
       context: ./classrooms
       dockerfile: Dockerfile
-    image: anumbatool1203/i211186_classroom
+    image: anumbatool1203/i211186_classroom:latest
     ports:
       - "23186:23186"
     environment:
@@ -45,7 +46,21 @@ services:
     build:
       context: ./event-bus
       dockerfile: Dockerfile
-    image: anumbatool1203/i211186_event
+    image: anumbatool1203/i211186_event:latest
+    ports:
+      - "33186:33186"
+    environment:
+      - AUTH_SERVICE_URL=http://auth:5000
+      - CLASSROOMS_SERVICE_URL=http://classrooms:5000
+      - MONGO_URI=mongodb://mongo:27017/eventbusdb
+    depends_on:
+      - mongo
+
+  post:
+    build:
+      context: ./Post
+      dockerfile: Dockerfile
+    image: anumbatool1203/i211186_post:latest
     ports:
       - "33186:33186"
     environment:

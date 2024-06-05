@@ -1,4 +1,4 @@
-pipeline{
+pipeline {
     agent any
 
     environment {
@@ -11,72 +11,67 @@ pipeline{
         DOCKER_HUB_REPO_POST = 'anumbatool1203/i211186_post' 
     }
 
-    stages{
-        stage('i211186_Checkout'){
+    stages {
+        stage('Checkout') {
             steps {
                 git 'https://github.com/NUCESFAST/scd-final-lab-exam-AnumBatool12.git'
             }
         }
-        stage('i211186_Build_Auth'){ // creating images separetly here
+        stage('Build Auth') {
             steps {
-                dir('Auth'){
+                dir('Auth') {
                     script {
-                        docker.build("${DOCKER_HUB_REPO_AUTH}:latest", '.')
+                        def authImage = docker.build("${DOCKER_HUB_REPO_AUTH}:latest", '.')
+                        authImage.push()
                     }
                 }
             }
         }
-        stage('i211186_Build_Classroom'){ // creating images separetly here
+        stage('Build Classroom') {
             steps {
-                dir('Classrooms'){
+                dir('Classrooms') {
                     script {
-                        docker.build("${DOCKER_HUB_REPO_CLASSROOM}:latest", '.')
+                        def classroomImage = docker.build("${DOCKER_HUB_REPO_CLASSROOM}:latest", '.')
+                        classroomImage.push()
                     }
                 }
             }
         }
-        stage('i211186_Build_Event'){ // creating images separetly here
+        stage('Build Event') {
             steps {
-                dir('event-bus'){
+                dir('event-bus') {
                     script {
-                        docker.build("${DOCKER_HUB_REPO_EVENT}:latest", '.')
+                        def eventImage = docker.build("${DOCKER_HUB_REPO_EVENT}:latest", '.')
+                        eventImage.push()
                     }
                 }
             }
         }
-        stage('i211186_Build_Frontend'){ // creating images separetly here
+        stage('Build Frontend') {
             steps {
-                dir('client'){
+                dir('client') {
                     script {
-                        docker.build("${DOCKER_HUB_REPO_FRONT}:latest", '.')
+                        def frontendImage = docker.build("${DOCKER_HUB_REPO_FRONT}:latest", '.')
+                        frontendImage.push()
                     }
                 }
             }
         }
-        stage('i211186_Build_POST'){ // creating images separetly here
+        stage('Build Post') {
             steps {
-                dir('client'){
+                dir('client') {
                     script {
-                        docker.build("${DOCKER_HUB_REPO_POST}:latest", '.')
+                        def postImage = docker.build("${DOCKER_HUB_REPO_POST}:latest", '.')
+                        postImage.push()
                     }
                 }
             }
         }
-        stage('i211186_Build_DB'){ // creating images separetly here
+        stage('Build DB') {
             steps {
                 script {
-                    docker.build("${DOCKER_HUB_REPO_DB}:latest", '.')
-                }
-            }
-        }
-        stage('Push Images to Docker Hub') {
-            steps {
-                script {
-                    docker.withRegistry('', DOCKER_CREDENTIALS_ID) {
-                        docker.image("${DOCKER_HUB_REPO}:latest").push()
-                        docker.image("${DOCKER_HUB_REPO}:latest").push()                        docker.image("${DOCKER_HUB_REPO}:latest").push()
-                        docker.image("${DOCKER_HUB_REPO}:latest").push()
-                    }
+                    def dbImage = docker.build("${DOCKER_HUB_REPO_DB}:latest", '.')
+                    dbImage.push()
                 }
             }
         }
