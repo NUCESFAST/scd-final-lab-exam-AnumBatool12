@@ -12,12 +12,12 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
+        stage('i211186Checkout') {
             steps {
                 git 'https://github.com/NUCESFAST/scd-final-lab-exam-AnumBatool12.git'
             }
         }
-        stage('Build Auth') {
+        stage('i211186Build Auth') {
             steps {
                 dir('Auth') {
                     script {
@@ -28,7 +28,7 @@ pipeline {
                 }
             }
         }
-        stage('Build Classroom') {
+        stage('i211186Build Classroom') {
             steps {
                 dir('Classrooms') {
                     script {
@@ -39,7 +39,7 @@ pipeline {
                 }
             }
         }
-        stage('Build Event') {
+        stage('i211186Build Event') {
             steps {
                 dir('event-bus') {
                     script {
@@ -50,7 +50,7 @@ pipeline {
                 }
             }
         }
-        stage('Build Frontend') {
+        stage('i211186Build Frontend') {
             steps {
                 dir('client') {
                     script {
@@ -61,7 +61,7 @@ pipeline {
                 }
             }
         }
-        stage('Build Post') {
+        stage('i211186Build Post') {
             steps {
                 dir('client') {
                     script {
@@ -72,7 +72,7 @@ pipeline {
                 }
             }
         }
-        stage('Build DB') {
+        stage('i211186Build DB') {
             steps {
                 script {
                     docker.build("${DOCKER_HUB_REPO_DB}:latest", '.').withRegistry('', "${DOCKER_CREDENTIALS_ID}") {
